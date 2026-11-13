@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile,mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import * as domain from '../src/domain.mjs';
+const data=JSON.parse(await readFile(new URL('../fixtures/source.json',import.meta.url))).data;
+const {textEvidence,preview}=domain;
+test('资料对象的领域边界和原始预览',async()=>{assert.notDeepEqual(textEvidence('一','screen',1),textEvidence('一','print',1));
+assert.throws(()=>textEvidence('a','other',1));
+assert.equal(preview(data).styleVersion,1);});
